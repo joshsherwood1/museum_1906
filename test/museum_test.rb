@@ -88,5 +88,7 @@ class MuseumTest < Minitest::Test
     @dmns.admit(@bob)
     @dmns.admit(@sally)
     assert_equal [@bob], @dmns.find_patrons(@gems_and_minerals)
+    assert_equal [@bob, @sally], @dmns.find_patrons(@dead_sea_scrolls)
+    assert_equal [], @dmns.find_patrons(@imax)
   end
 end
