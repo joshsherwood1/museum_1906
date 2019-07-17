@@ -6,8 +6,9 @@ require './lib/patron'
 require './lib/museum'
 class MuseumTest < Minitest::Test
   def setup
-    @bob = Patron.new("Bob", 20)
+    @bob = Patron.new("Bob", 10)
     @sally = Patron.new("Sally", 20)
+    @tj = Patron.new("TJ", 7)
     @imax = Exhibit.new("IMAX", 15)
     @dead_sea_scrolls = Exhibit.new("Dead Sea Scrolls", 10)
     @gems_and_minerals = Exhibit.new("Gems and Minerals", 0)
@@ -90,5 +91,15 @@ class MuseumTest < Minitest::Test
     assert_equal [@bob], @dmns.find_patrons(@gems_and_minerals)
     assert_equal [@bob, @sally], @dmns.find_patrons(@dead_sea_scrolls)
     assert_equal [], @dmns.find_patrons(@imax)
+  end
+
+  def test_that_bob_attends_dead_sea_scrolls_exhibit
+    @dmns.add_exhibit(@gems_and_minerals)
+    @dmns.add_exhibit(@dead_sea_scrolls)
+    @dmns.add_exhibit(@imax)
+    @bob.add_interest("Dead Sea Scrolls")
+    @bob.add_interest("IMAX")
+    @dmns.admit(@bob)
+    assert_equal 0, @bob.spending_money
   end
 end
